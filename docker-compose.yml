@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  book-rentals:
+    image: node:16.14.2
+    working_dir: /app
+    volumes:
+      - .:/app:cached
+      - book-rentals-node-modules:/app/node_modules
+    command: make book-rentals-startup
+    ports:
+      - 3500:3500
+    depends_on:
+      - postgres
+  
+  postgres:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - 5434:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+
+
+volumes:
+  book-rentals-node-modules:
+  postgres:
